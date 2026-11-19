@@ -1,0 +1,10 @@
+# Project settings for paper_kit. Paths are relative to this file.
+
+[paper]
+tex = "paper/main.tex"                    # the file with \documentclass and \begin{document}
+figures_dir = "paper/figures/generated"
+tables_dir = "paper/tables"
+figure_formats = ["svg", "png"]           # SVG for the paper, PNG for review
+
+[style]  # matplotlib rcParams that differ from the defaults, for example:
+# "font.size" = 8                        # all text sizes follow this value
