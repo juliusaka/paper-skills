@@ -38,6 +38,7 @@ pip install -e ./tools/paper-kit        # otherwise, inside the active environme
 
 - Check that `pdflatex`, `latexmk` and `inkscape` are installed. Do not install system packages without asking.
 - If `pdflatex` is missing, stop and tell the user. If only `latexmk` or `inkscape` is missing, continue, skip the build in step 8 and list it as unverified in your report.
+- Check that one of `pdftoppm`, `mutool` or `gs` is installed, so tables get a PNG. If none is, tell the user.
 - Add `\usepackage{svg}` to the paper's preamble if it is missing.
 - Add `**/svg-inkscape/` to the project's `.gitignore`.
 
@@ -65,7 +66,7 @@ python tools/paper-kit/templates/plot_panel_grid.py
 python tools/paper-kit/templates/table_from_csv.py
 ```
 
-Each run must print a line with the height in points and no `WARNING:`. Open one generated PNG and check it.
+Each run must print a line with the height in points and no `WARNING:`. Look at the PNG of each run. If you cannot view images, say so in your report.
 
 Before you delete the examples, confirm that Inkscape converts an SVG. Put a temporary copy of the main file next to the original, add the include line that `plot_single_axes.py` printed, change to that folder and run `latexmk <copy>.tex`. `latexmk` reads `.latexmkrc` from the working directory. Delete the copy and its build files afterwards.
 

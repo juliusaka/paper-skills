@@ -134,8 +134,13 @@ def preamble(config: Config) -> str:
     return text[: match.end() - len(_BEGIN_DOCUMENT)]
 
 
-def compile_probe(config: Config, body: str, files: dict[str, str] | None = None) -> tuple[dict[str, float], str]:
-    """Compile ``body`` after the paper's preamble; return the probe values and the log."""
+def compile_probe(
+    config: Config, body: str, files: dict[str, str] | None = None, pdf_out: Path | None = None
+) -> tuple[dict[str, float], str]:
+    """Compile ``body`` after the paper's preamble; return the probe values and the log.
+
+    ``pdf_out`` keeps a copy of the compiled PDF.
+    """
     if shutil.which("pdflatex") is None:
         raise SystemExit("pdflatex not found: install a LaTeX distribution")
     queries = "\n".join(rf"\typeout{{PAPERKIT-{key}={value}}}" for key, value in _QUERIES.items())
@@ -155,6 +160,8 @@ def compile_probe(config: Config, body: str, files: dict[str, str] | None = None
         )
         log_path = work / "probe.log"
         log = log_path.read_text(encoding="utf-8", errors="replace") if log_path.exists() else result.stdout
+        if pdf_out is not None and result.returncode == 0 and (work / "probe.pdf").exists():
+            shutil.copyfile(work / "probe.pdf", pdf_out)
     if result.returncode != 0:
         errors = [line for line in log.splitlines() if line.startswith("!")]
         raise SystemExit("does not compile with pdfLaTeX and the paper's preamble:\n  " + "\n  ".join(errors[:5] or ["see the log"]))
@@ -174,12 +181,17 @@ def _check_page(config: Config, values: dict[str, float]) -> None:
             )
 
 
-def measure(config: Config, name: str, fragment: str) -> Fit | None:
+def measure(config: Config, name: str, fragment: str, pdf_out: Path | None = None) -> Fit | None:
     """Measure a float fragment. Returns None when pdflatex is not installed."""
     if shutil.which("pdflatex") is None:
         print("  pdflatex not found: page fit not measured")
         return None
-    values, log = compile_probe(config, r"\input{paperkit-fragment.tex}", {"paperkit-fragment.tex": fragment})
+    values, log = compile_probe(
+        config,
+        r"\thispagestyle{empty}\input{paperkit-fragment.tex}",  # no page number in a rendered picture
+        {"paperkit-fragment.tex": fragment},
+        pdf_out,
+    )
     _check_page(config, values)
     height = values.get("height")
     if height is None and "longtable" not in fragment:

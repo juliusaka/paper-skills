@@ -42,7 +42,16 @@ Copy `plot_single_axes.py` or `plot_panel_grid.py` from the `templates/` folder 
   254.3 pt tall of 552.7 pt text block (46%), shares a page with text, no overfull boxes
 ```
 
-Treat every `WARNING:` as a real problem. Then open the PNG. Lines that merge into a solid block hide what the figure must show.
+Treat every `WARNING:` as a real problem.
+
+Then look at the PNG yourself, fix the generator and rerun it until none of these is wrong:
+
+- every label, tick and legend entry is readable and overlaps nothing
+- the legend covers no data
+- every series can be told apart, and no lines merge into a solid block
+- the figure shows the point it is meant to support
+
+If you cannot view images, tell the user and name the PNG they need to check.
 
 ### 5. Check the fit without building the paper
 

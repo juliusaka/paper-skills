@@ -37,11 +37,20 @@ Copy `table_from_csv.py` from the `templates/` folder of the installed kit to th
 
 ```
 wrote paper/tables/example.tex
+wrote paper/tables/example.png
 wrote paper/tables/example.sh
   299.8 pt tall of 552.7 pt text block (54%), shares a page with text, no overfull boxes
 ```
 
-`save()` compiles the table alone with the paper's preamble. Treat every `WARNING:` as a real problem.
+`save()` compiles the table alone with the paper's preamble and renders it as a PNG. Treat every `WARNING:` as a real problem.
+
+Then look at the PNG yourself, fix the generator and rerun it until none of these is wrong:
+
+- every heading and cell is readable, and nothing wraps or runs into the next column
+- units sit in the headings, and numbers in a column have the same precision
+- missing values are marked, not empty
+
+If you cannot view images, tell the user and name the PNG they need to check. For a `longtable` the PNG shows its first page only.
 
 ### 4. Check the fit without building the paper
 
@@ -63,7 +72,7 @@ An `Overfull \hbox` means the table is too wide. Ignore underfull boxes.
 \input{tables/<table_name>.tex}
 ```
 
-The fragment carries its own `table` environment, `\caption` and `\label`. Commit the `.tex` and the `.sh`.
+The fragment carries its own `table` environment, `\caption` and `\label`. Commit the `.tex`, the PNG and the `.sh`.
 
 ### 6. Write three separate texts
 

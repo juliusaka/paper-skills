@@ -12,6 +12,10 @@ Give your coding agent this prompt from the root of your paper project:
 Install the paper skills from https://github.com/juliusaka/paper-skills into this project. Follow SETUP.md in that repository.
 ```
 
+## Safety
+
+Using a coding agent is at your own risk. Run it in a sandbox, and choose exactly which files and folders the sandbox gives the agent. This limits the damage from prompt injection, for example through a file or web page the agent reads, and the risk of leaking unpublished or confidential data.
+
 ## Skills
 
 | Skill | Use it to |
@@ -24,7 +28,7 @@ Install the paper skills from https://github.com/juliusaka/paper-skills into thi
 - Keeps figures as vector graphics: Python writes SVG, and Inkscape converts it during the LaTeX build.
 - Sizes figures from the measured text block of your paper, so labels keep their point size in the PDF.
 - Uses a colour-blind-safe palette with fixed colours for reference, model, setpoint, baseline and limit lines.
-- Saves each figure and table next to a shell script that reruns its generator.
+- Saves each figure and table next to a shell script that reruns its generator, and as a PNG for the agent and you to look at.
 - Compiles a single figure or table with your paper's preamble and reports where it lands on the page, without building the paper.
 
 ## What your project gets
@@ -55,7 +59,9 @@ The folder names are suggestions. The `.sh` beside each figure and table names i
 
 ## Requirements
 
-Python 3.11 or newer, a LaTeX distribution with `pdflatex`, `latexmk` and the `svg` package, and Inkscape. The page checks compile with pdfLaTeX, so papers that need XeLaTeX or LuaLaTeX are not supported.
+Python 3.11 or newer, a LaTeX distribution with `pdflatex`, `latexmk` and the `svg` package, and Inkscape. The page checks compile with pdfLaTeX, so papers that need XeLaTeX or LuaLaTeX are not supported. Pictures of tables need `pdftoppm` (Poppler), `mutool` (MuPDF) or `gs` (Ghostscript).
+
+Use an agent model that can read images. The skills have the agent look at every figure and table it makes and improve it, which saves most of the review rounds.
 
 ## Possible future work
 
